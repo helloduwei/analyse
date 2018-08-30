@@ -1,14 +1,14 @@
 <template>
   <div class="content">
     <User />
-    summary page
+    wx-page page
   </div>
 </template>
 
 <script>
 import User from '../components/User.vue'
 export default {
-  name: 'summaryPage',
+  name: 'wxPagePage',
   components: {
     User
   }

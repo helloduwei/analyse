@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div class="app">
     <Nav />
     <router-view></router-view>
   </div>
@@ -17,5 +17,29 @@ export default {
 </script>
 
 <style lang="less">
-  // global style here, for nav and right section
+  // global css
+  html, body {
+    margin: 0;
+    min-height: 100vh;
+    min-height: 100%;
+    font-family: '微软雅黑', sans-serif;
+  }
+  div {
+    box-sizing: border-box;
+  }
+  .app {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+    min-width: 100%;
+    .nav {
+      width: 240px;
+      min-height: 100vh;
+      min-height: 100%;
+      background-color: #ddeefb;
+    }
+    .content {
+      flex: 1;
+    }
+  }
 </style>

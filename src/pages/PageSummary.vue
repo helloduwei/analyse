@@ -1,14 +1,14 @@
 <template>
   <div class="content">
     <User />
-    summary page
+    page-summary page
   </div>
 </template>
 
 <script>
 import User from '../components/User.vue'
 export default {
-  name: 'summaryPage',
+  name: 'pageSummaryPage',
   components: {
     User
   }
