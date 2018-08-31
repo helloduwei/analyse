@@ -1,3 +1,4 @@
+// 路由配置
 import Summary from '../pages/Summary.vue'
 import DataSummary from '../pages/DataSummary.vue'
 import DataDetail from '../pages/DataDetail.vue'
