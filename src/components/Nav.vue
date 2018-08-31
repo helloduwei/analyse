@@ -3,8 +3,11 @@
     <div class="logo">
       <img src="../assets/img/SMG.png" alt="">
     </div>
-    <div class="column" @click="jump('/summary')">
-      概况
+    <div class="section">
+      <div :class="{column: true, active: currentpage === 0}" @click="jump('/summary')">
+        概况
+        <img v-show="currentpage === 0" class="corner" src="../assets/img/onCorner.png" alt="corner">
+      </div>
     </div>
     <div class="section" v-for="(item, index) in navis" :key="index">
       <div :class="{column: true, bar: true, on: item.active}" @click="toggle(item)">
@@ -13,7 +16,8 @@
       </div>
       <div v-show="item.active" :class="{column: true, sub: true, active: sub.pageid === currentpage}" v-for="(sub, subindex) in item.subs" :key="subindex" @click="jump(sub.link)">
         <img :src="sub.pageid === currentpage ? sub.activeIcon : sub.icon" alt="sub.subtitle">
-          {{sub.subtitle}}
+        {{sub.subtitle}}
+        <img v-show="currentpage === sub.pageid" class="corner" src="../assets/img/onCorner.png" alt="corner">
       </div>
     </div>
   </div>
@@ -140,7 +144,7 @@ export default {
     border-bottom: 1px solid #cde3f1;
     color: #52687a;
     font-size: 16px;
-    padding: 0 12px;
+    padding: 0 0 0 12px;
     cursor: pointer;
   }
   .section {
@@ -164,6 +168,10 @@ export default {
     .active {
       background-color: #c5e5fa;
       color: #0091f2;
+    }
+    .corner {
+      float: right;
+      margin: 15px 0;
     }
   }
 </style>
