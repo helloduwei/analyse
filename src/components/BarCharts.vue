@@ -26,6 +26,8 @@ export default {
       const myCharts = echarts.init(element);
       const isWX = [10, 20];
       const isNotWX = [20, 30];
+      const isWB = [20, 30];
+      const isNotWB = [10, 30];
       const options = {
         legend: {
           data: ['wx', 'notWX', 'wb', 'notWB']
@@ -33,14 +35,14 @@ export default {
         tooltip: {},
         grid: [
           {
-            x: '0%',
-            y: '0%',
-            width: '50%'
+            left: '0%',
+            top: '20%',
+            width: '40%'
           },
           {
-            x: '50%',
-            y: '0%',
-            width: '50%'
+            left: '60%',
+            top: '20%',
+            width: '40%'
           }
         ],
         xAxis: [
@@ -61,12 +63,20 @@ export default {
             gridIndex: 0,
             data: ['1', '2'],
             type: 'category',
-            position: 'right'
+            position: 'right',
+            offset: 90,
+            axisLine: {
+              show: false
+            },
+            axisTick: {
+              show: false
+            }
           },
           {
             gridIndex: 1,
             data: ['1', '2'],
-            type: 'category'
+            type: 'category',
+            show: false
           }
         ],
         series: [
@@ -74,37 +84,35 @@ export default {
             name: 'wx',
             type: 'bar',
             stack: 'one',
-            data: isWX
+            data: isWX,
+            xAxisIndex: 0,
+            yAxisIndex: 0,
           },
           {
             name: 'notWX',
             type: 'bar',
             stack: 'one',
-            data: isNotWX
+            data: isNotWX,
+            xAxisIndex: 0,
+            yAxisIndex: 0,
           },
           {
             name: 'wb',
             type: 'bar',
-            stack: 'one',
-            data: isWX
+            stack: 'two',
+            data: isWB,
+            xAxisIndex: 1,
+            yAxisIndex: 1,
           },
           {
             name: 'notWB',
             type: 'bar',
-            stack: 'one',
-            data: isNotWX
+            stack: 'two',
+            data: isNotWB,
+            xAxisIndex: 1,
+            yAxisIndex: 1,
           }
-        ],
-        xAxis: {
-          id: 'wb',
-          data: [10, 20, 30, 40],
-          type: 'value'
-        },
-        yAxis: {
-          id: 'wx',
-          data: ['1', '2'],
-          type: 'category'
-        },
+        ]
       }
 
       myCharts.setOption(options)
