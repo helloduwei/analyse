@@ -99,8 +99,56 @@
           </div>
         </div>
       </div>
-      <div>
+      <div class="chartSection">
+        <div class="title">
+          <div v-for="(bar, barIndex) in barTabs" :key="barIndex" :class="{tab: true, active: bar === activeBar}" @click="toggleBar(bar)">
+            {{bar}}
+          </div>
+        </div>
+        <div class="conditions">
+          <div :class="{range: true, active: bar.value === barRange}" v-for="(bar, barIndex) in ranges" :key="barIndex" @click="toggleRange(bar, 'bar')">
+            {{bar.value}}
+          </div>
+        </div>
         <DoubleBar />
+      </div>
+      <div class="chartSection">
+        <div class="title">
+          <div v-for="(k, kIndex) in kTabs" :key="kIndex" :class="{tab: true, active: k === activeK}" @click="toggleK(k)">
+            {{k}}
+          </div>
+        </div>
+        <div class="conditions">
+          <div :class="{range: true, active: k.value === kRange}" v-for="(k, kIndex) in ranges" :key="kIndex" @click="toggleRange(k, 'k')">
+            {{k.value}}
+          </div>
+        </div>
+        <KLine />
+      </div>
+      <div class="chartSection">
+        <div class="title">
+          <div v-for="(board, boardIndex) in boardTabs" :key="boardIndex" :class="{tab: true, active: board === activeBoard}" @click="toggleBoard(board)">
+            {{board}}
+          </div>
+        </div>
+        <div class="conditions">
+          <div :class="{range: true, active: board.value === boardRange}" v-for="(board, boardIndex) in ranges" :key="boardIndex" @click="toggleRange(board, 'board')">
+            {{board.value}}
+          </div>
+        </div>
+        <div class="boards">
+          <div class="board">
+            <p class="title">
+              稿件发布数排行
+              <img src="../assets/img/data_title.png" alt="">
+            </p>
+            <ol class="boardData">
+              <li v-for="(board, boardIndex) in boards" :key="boardIndex">
+                {{board.name}}
+              </li>
+            </ol>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -109,11 +157,13 @@
 <script>
 import User from '../components/User.vue'
 import DoubleBar from '../components/DoubleBar'
+import KLine from '../components/KLine'
 export default {
   name: 'summaryPage',
   components: {
     User,
-    DoubleBar
+    DoubleBar,
+    KLine
   },
   data() {
     return {
@@ -144,9 +194,93 @@ export default {
           wx: 3456789,
           wb: 3459876
         }
-      }
+      },
+      barTabs: [
+        '发稿数', '阅读数', '关注人数'
+      ],
+      activeBar: '发稿数',
+      kTabs: [
+        '发稿数趋势', '阅读数趋势', '关注人数趋势'
+      ],
+      activeK: '发稿数趋势',
+      boardTabs: [
+        '微信排行', '微博排行'
+      ],
+      activeBoard: '微信排行',
+      ranges: [
+        {
+          value: '最近7天'
+        },
+        {
+          value: '最近30天'
+        },
+        {
+          value: '2018-07-01至2018-07-05'
+        }
+      ],
+      barRange: '最近7天',
+      kRange: '最近30天',
+      boardRange: '2018-07-01至2018-07-05',
+      boards: [
+        {
+          name: '新闻坊',
+          mount: '1.9万'
+        },
+        {
+          name: '新闻坊',
+          mount: '1.9万'
+        },
+        {
+          name: '新闻坊',
+          mount: '1.9万'
+        },
+        {
+          name: '新闻坊',
+          mount: '1.9万'
+        },
+        {
+          name: '新闻坊',
+          mount: '1.9万'
+        },
+        {
+          name: '新闻坊',
+          mount: '1.9万'
+        },
+        {
+          name: '新闻坊',
+          mount: '1.9万'
+        },
+        {
+          name: '新闻坊',
+          mount: '1.9万'
+        }
+      ]
     }
   },
+  methods: {
+    toggleBar(bar) {
+      this.activeBar = bar;
+    },
+    toggleK(k) {
+      this.activeK = k;
+    },
+    toggleBoard(board) {
+      this.activeBoard = board;
+    },
+    toggleRange(item, type) {
+      const val = item.value;
+      switch(type) {
+        case 'bar':
+        this.barRange = val;
+        break;
+        case 'k':
+        this.kRange = val;
+        break;
+        case 'board':
+        this.boardRange = val;
+      }
+    }
+  }
 }
 </script>
 
@@ -205,6 +339,78 @@ export default {
         }
         .dataSummary:last-child {
           margin: 0;
+        }
+      }
+      .chartSection {
+        width: 100%;
+        .title {
+          height: 60px;
+          background-color: #f5f5f5;
+          .tab {
+            display: inline-block;
+            height: 60px;
+            line-height: 60px;
+            padding: 0 20px;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+          }
+          .active {
+            border-color: #1292ef;
+            color: #1292ef;
+          }
+        }
+        .conditions {
+          width: 100%;
+          height: auto;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: flex-end;
+          .range {
+            display: inline-block;
+            margin: 0 0 0 10px;
+            border-radius: 4px;
+            height: 30px;
+            width: auto;
+            padding: 0 10px;
+            line-height: 30px;
+            font-size: 14px;
+            color: #154972;
+            background-color: #ddeefb;
+            cursor: pointer;
+          }
+          .active {
+            color: #0091f2;
+            background-color: #c5e5fa;
+          }
+        }
+        .boards {
+          .board {
+            .title {
+              height: 34px;
+              line-height: 34px;
+              font-size: 18px;
+              color: #52687a;
+              background-color: transparent;
+              img {
+                margin: 0 0 0 -10px;
+                vertical-align: middle;
+              }
+            }
+          }
+          .boardData {
+            // tobe donw
+            color: #52687a;
+            li {
+              height: 34px;
+              line-height: 34px;
+              border-top: 1px solid #ebf1f6;
+              display: flex;
+            }
+            li:nth-child(even) {
+              background-color: #fcf8f5;
+            }
+          }
         }
       }
     }
