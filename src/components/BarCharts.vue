@@ -1,13 +1,12 @@
+<!-- 双向飓风图 -->
 <template>
-  <div class="charts" id="bar">
-    
-  </div>
+  <div class="charts" id="doubleCharts"></div>
 </template>
 
 <script>
 const echarts = require('echarts')
 export default {
-  name: 'Charts',
+  name: 'doubleCharts',
   props: {
     // BarCharts
   },
@@ -21,8 +20,7 @@ export default {
       // to be done
     },
     getInit() {
-      // do be done
-      const element = document.querySelector('#bar');
+      const element = document.querySelector('#doubleCharts');
       const myCharts = echarts.init(element);
       const isWX = [10, 20];
       const isNotWX = [20, 30];
@@ -35,14 +33,14 @@ export default {
         tooltip: {},
         grid: [
           {
-            left: '0%',
+            left: '5%',
             top: '20%',
-            width: '40%'
+            width: '35%'
           },
           {
             left: '60%',
             top: '20%',
-            width: '40%'
+            width: '35%'
           }
         ],
         xAxis: [

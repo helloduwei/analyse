@@ -34,6 +34,7 @@ export default {
     min-width: 100%;
     .nav {
       width: 240px;
+      min-width: 140px;
       min-height: 100vh;
       min-height: 100%;
       background-color: #ddeefb;
