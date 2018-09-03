@@ -100,7 +100,7 @@
         </div>
       </div>
       <div>
-        <BarCharts />
+        <DoubleBar />
       </div>
     </div>
   </div>
@@ -108,12 +108,12 @@
 
 <script>
 import User from '../components/User.vue'
-import BarCharts from '../components/BarCharts'
+import DoubleBar from '../components/DoubleBar'
 export default {
   name: 'summaryPage',
   components: {
     User,
-    BarCharts
+    DoubleBar
   },
   data() {
     return {

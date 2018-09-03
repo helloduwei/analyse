@@ -1,12 +1,12 @@
 <!-- 双向飓风图 -->
 <template>
-  <div class="charts" id="doubleCharts"></div>
+  <div class="charts" id="doubleBar"></div>
 </template>
 
 <script>
 const echarts = require('echarts')
 export default {
-  name: 'doubleCharts',
+  name: 'doubleBar',
   props: {
     // BarCharts
   },
@@ -20,7 +20,7 @@ export default {
       // to be done
     },
     getInit() {
-      const element = document.querySelector('#doubleCharts');
+      const element = document.querySelector('#doubleBar');
       const myCharts = echarts.init(element);
       const isWX = [10, 20];
       const isNotWX = [20, 30];
