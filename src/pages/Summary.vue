@@ -144,7 +144,32 @@
             </p>
             <ol class="boardData">
               <li v-for="(board, boardIndex) in boards" :key="boardIndex">
-                {{board.name}}
+                <span>{{board.name}}</span>
+                <span class="mount">{{board.mount}}</span>
+              </li>
+            </ol>
+          </div>
+          <div class="board">
+            <p class="title">
+              稿件发布数排行
+              <img src="../assets/img/data_title.png" alt="">
+            </p>
+            <ol class="boardData">
+              <li v-for="(board, boardIndex) in boards" :key="boardIndex">
+                <span>{{board.name}}</span>
+                <span class="mount">{{board.mount}}</span>
+              </li>
+            </ol>
+          </div>
+          <div class="board">
+            <p class="title">
+              稿件发布数排行
+              <img src="../assets/img/data_title.png" alt="">
+            </p>
+            <ol class="boardData">
+              <li v-for="(board, boardIndex) in boards" :key="boardIndex">
+                <span>{{board.name}}</span>
+                <span class="mount">{{board.mount}}</span>
               </li>
             </ol>
           </div>
@@ -284,135 +309,4 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-  .content {
-    .user {
-      width: 100%;
-      height: 60px;
-      border-bottom: 1px solid #b1dbf9;
-    }
-    .main {
-      padding: 26px 20px;
-      min-height: 100vh;
-      min-height: 100%;
-      .summaryLine {
-        display: flex;
-        flex-direction: row;
-        .dataSummary {
-          flex: 1;
-          margin: 0 50px 0 0;
-          .title {
-            height: 34px;
-            line-height: 34px;
-            font-size: 18px;
-            color: #52687a;
-            img {
-              margin: 0 0 0 -10px;
-              vertical-align: middle;
-            }
-          }
-          .row {
-            display: flex;
-            height: 62px;
-            line-height: 62px;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            .head {
-              width: 120px;
-              color: #52687a;
-              font-size: 16px;
-            }
-            .number {
-              width: 80px;
-              text-align: left;
-              font-size: 18px;
-              color: #0091f2;
-            }
-            img {
-              vertical-align: middle;
-            }
-          }
-          .dotLine {
-            border-bottom: 1px dotted #c4c4c4;
-          }
-        }
-        .dataSummary:last-child {
-          margin: 0;
-        }
-      }
-      .chartSection {
-        width: 100%;
-        .title {
-          height: 60px;
-          background-color: #f5f5f5;
-          .tab {
-            display: inline-block;
-            height: 60px;
-            line-height: 60px;
-            padding: 0 20px;
-            border-bottom: 2px solid transparent;
-            cursor: pointer;
-          }
-          .active {
-            border-color: #1292ef;
-            color: #1292ef;
-          }
-        }
-        .conditions {
-          width: 100%;
-          height: auto;
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: flex-end;
-          .range {
-            display: inline-block;
-            margin: 0 0 0 10px;
-            border-radius: 4px;
-            height: 30px;
-            width: auto;
-            padding: 0 10px;
-            line-height: 30px;
-            font-size: 14px;
-            color: #154972;
-            background-color: #ddeefb;
-            cursor: pointer;
-          }
-          .active {
-            color: #0091f2;
-            background-color: #c5e5fa;
-          }
-        }
-        .boards {
-          .board {
-            .title {
-              height: 34px;
-              line-height: 34px;
-              font-size: 18px;
-              color: #52687a;
-              background-color: transparent;
-              img {
-                margin: 0 0 0 -10px;
-                vertical-align: middle;
-              }
-            }
-          }
-          .boardData {
-            // tobe donw
-            color: #52687a;
-            li {
-              height: 34px;
-              line-height: 34px;
-              border-top: 1px solid #ebf1f6;
-              display: flex;
-            }
-            li:nth-child(even) {
-              background-color: #fcf8f5;
-            }
-          }
-        }
-      }
-    }
-  }
-</style>
+<style lang="less" scoped src="../assets/css/summary.less"></style>

@@ -8,6 +8,10 @@ import WxPage from '../pages/WxPage.vue'
 export default {
   pages: [
     {
+      path: '/',
+      component: Summary
+    },
+    {
       path: '/summary',
       component: Summary
     },
