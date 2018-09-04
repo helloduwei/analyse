@@ -18,6 +18,13 @@ module.exports = {
     historyApiFallback: true,
     hotOnly: true,
     open: true,
-    useLocalIp: true
+    useLocalIp: true,
+    proxy: {
+      '/index.php': {
+        target: 'https://smgdatadev.smgtech.net',
+        ws: true,
+        changeOrigin: true
+      }
+    }
   }
 }

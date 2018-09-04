@@ -183,6 +183,8 @@
 import User from '../components/User.vue'
 import DoubleBar from '../components/DoubleBar'
 import KLine from '../components/KLine'
+import * as Apis from '../common/api'
+import Common from '../common/common'
 export default {
   name: 'summaryPage',
   components: {
@@ -194,30 +196,30 @@ export default {
     return {
       yesterday: {
         pages: {
-          wx: 1231,
-          wb: 2223
+          wx: '...',
+          wb: '...'
         },
         read: {
-          wx: 1233,
-          wb: 678
+          wx: '...',
+          wb: '...'
         },
         users: {
-          wx: 789,
-          wb: 456
+          wx: '...',
+          wb: '...'
         }
       },
       all: {
         pages: {
-          wx: 6789,
-          wb: 5678
+          wx: '...',
+          wb: '...'
         },
         read: {
-          wx: 45677,
-          wb: 34567
+          wx: '...',
+          wb: '...'
         },
         users: {
-          wx: 3456789,
-          wb: 3459876
+          wx: '...',
+          wb: '...'
         }
       },
       barTabs: [
@@ -283,6 +285,27 @@ export default {
     }
   },
   methods: {
+    getTotalData() {
+      Common.myFetch(Apis.S_Total_Data_DEV, Apis.S_Total_Data_Path)
+      .then((data) => {
+        if (data) {
+          const yesterdayData = data.yesterdaydata;
+          const allData = data.alldata;
+          this.yesterday.pages.wx = yesterdayData.weixin.draft;
+          this.yesterday.pages.wb = yesterdayData.weibo.draft || 0;
+          this.yesterday.read.wx = yesterdayData.weixin.read;
+          this.yesterday.read.wb = yesterdayData.weibo.read || 0;
+          this.yesterday.users.wx = yesterdayData.weixin.new;
+          this.yesterday.users.wb = yesterdayData.weibo.new || 0;
+          this.all.pages.wx = allData.weixin.draft;
+          this.all.pages.wb = allData.weibo.draft || 0;
+          this.all.read.wx = allData.weixin.read;
+          this.all.read.wb = allData.weibo.read || 0;
+          this.all.users.wx = allData.weixin.all;
+          this.all.users.wb = allData.weibo.all || 0;
+        }
+      })
+    },
     toggleBar(bar) {
       this.activeBar = bar;
     },
@@ -305,6 +328,9 @@ export default {
         this.boardRange = val;
       }
     }
+  },
+  mounted() {
+    this.getTotalData();
   }
 }
 </script>
