@@ -33,7 +33,7 @@ export default {
     const key = 'SMGDATATOKEN';
     const value = this.getCookie(key);
     if (value) {
-      return value.split(',')[1];
+      return value.split(',')[1] || value.split('25%')[1];
     }
 
     return 0
@@ -42,7 +42,7 @@ export default {
     const key = 'SMGDATATOKEN';
     const value = this.getCookie(key);
     if (value) {
-      return value.split(',')[0];
+      return value.split(',')[0] || value.split('25%')[0];
     }
 
     return ''

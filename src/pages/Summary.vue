@@ -105,11 +105,7 @@
             {{bar}}
           </div>
         </div>
-        <div class="conditions">
-          <div :class="{range: true, active: bar.value === barRange}" v-for="(bar, barIndex) in ranges" :key="barIndex" @click="toggleRange(bar, 'bar')">
-            {{bar.value}}
-          </div>
-        </div>
+        <Time eleId="date1" v-on:fetchRange="getBarRange" />
         <DoubleBar />
       </div>
       <div class="chartSection">
@@ -118,11 +114,7 @@
             {{k}}
           </div>
         </div>
-        <div class="conditions">
-          <div :class="{range: true, active: k.value === kRange}" v-for="(k, kIndex) in ranges" :key="kIndex" @click="toggleRange(k, 'k')">
-            {{k.value}}
-          </div>
-        </div>
+        <Time eleId="date2" v-on:fetchRange="getKRange" />
         <KLine />
       </div>
       <div class="chartSection">
@@ -131,11 +123,7 @@
             {{board}}
           </div>
         </div>
-        <div class="conditions">
-          <div :class="{range: true, active: board.value === boardRange}" v-for="(board, boardIndex) in ranges" :key="boardIndex" @click="toggleRange(board, 'board')">
-            {{board.value}}
-          </div>
-        </div>
+        <Time eleId="date3" v-on:fetchRange="getBoardRange" />
         <div class="boards">
           <div class="board">
             <p class="title">
@@ -182,6 +170,7 @@
 <script>
 import User from '../components/User.vue'
 import DoubleBar from '../components/DoubleBar'
+import Time from '../components/Time'
 import KLine from '../components/KLine'
 import * as Apis from '../common/api'
 import Common from '../common/common'
@@ -190,7 +179,8 @@ export default {
   components: {
     User,
     DoubleBar,
-    KLine
+    KLine,
+    Time
   },
   data() {
     return {
@@ -234,20 +224,6 @@ export default {
         '微信排行', '微博排行'
       ],
       activeBoard: '微信排行',
-      ranges: [
-        {
-          value: '最近7天'
-        },
-        {
-          value: '最近30天'
-        },
-        {
-          value: '2018-07-01至2018-07-05'
-        }
-      ],
-      barRange: '最近7天',
-      kRange: '最近30天',
-      boardRange: '2018-07-01至2018-07-05',
       boards: [
         {
           name: '新闻坊',
@@ -285,6 +261,15 @@ export default {
     }
   },
   methods: {
+    getBarRange(r) {
+      this.getWXData(r)
+    },
+    getKRange(r) {
+      this.getWXTrend(r)
+    },
+    getBoardRange(r) {
+      this.getBoardData(r)
+    },
     getTotalData() {
       Common.myFetch(Apis.S_Total_Data_DEV, Apis.S_Total_Data_Path)
       .then((data) => {
@@ -304,6 +289,24 @@ export default {
           this.all.users.wx = allData.weixin.all;
           this.all.users.wb = allData.weibo.all || 0;
         }
+      })
+    },
+    getWXData(range) {
+      Common.myFetch(Apis.S_WX_Data_DEV, Apis.S_WX_Data_Path, range)
+      .then((data) => {
+        console.log('wx data', data)
+      })
+    },
+    getWXTrend(range) {
+      Common.myFetch(Apis.S_WX_Trend_DEV, Apis.S_WX_Trend_Path, range)
+      .then((data) => {
+        console.log('wx trend', data)
+      })
+    },
+    getBoardData(range) {
+      Common.myFetch(Apis.S_WX_Board_DEV, Apis.S_WX_Board_Path, range)
+      .then((data) => {
+        console.log('wx board', data)
       })
     },
     toggleBar(bar) {

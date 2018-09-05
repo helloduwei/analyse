@@ -4,7 +4,7 @@ console.log('from my config...')
 module.exports = {
   baseUrl: '/',
   outputDir: 'deploy',
-  assetsDir: './src/assets/',
+  assetsDir: './src/',
   css: {
     extract: true,
     loaderOptions: {
