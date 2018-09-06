@@ -1,6 +1,6 @@
 <!-- K线图 -->
 <template>
-  <div class="charts" id="kLine"></div>
+  <div class="charts" :id="eleId"></div>
 </template>
 
 <script>
@@ -8,7 +8,8 @@ const echarts = require('echarts')
 export default {
   name: 'doubleBar',
   props: {
-    data: Object
+    data: Object,
+    eleId: String
   },
   data() {
     return {
@@ -30,12 +31,13 @@ export default {
       // to be done
     },
     getInit() {
-      const element = document.querySelector('#kLine');
+      const elementId = '#' + this.eleId
+      const element = document.querySelector(elementId);
       const myCharts = echarts.init(element);
       const options = {
         legend: {
           right: '0',
-          data: ['微信发布']
+          data: [this.data.title]
         },
         tooltip: {
             trigger: 'axis'
@@ -44,6 +46,9 @@ export default {
           left: '5%',
           top: '20%',
           width: '100%'
+        },
+        itemStyle: {
+          color: this.data.color,
         },
         xAxis: { 
           data: this.data.xAxis,
@@ -55,7 +60,7 @@ export default {
         series: [
           {
             type: 'line',
-            name: '微信发布',
+            name: this.data.title,
             data: this.data.series
           }
         ]

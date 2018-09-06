@@ -115,7 +115,8 @@
           </div>
         </div>
         <Time eleId="date2" v-on:fetchRange="getKRange" />
-        <KLine v-bind:data="kData" />
+        <KLine eleId="k1" v-bind:data="kWXData" />
+        <KLine eleId="k2" v-bind:data="kWBData" />
       </div>
       <div class="chartSection">
         <div class="title">
@@ -190,9 +191,17 @@ export default {
       },
       boards: {},
       trendData: {},
-      kData: {
+      kWXData: {
         series: [],
-        xAxis: []
+        xAxis: [],
+        color: '#7ee23c',
+        title: '微信发布'
+      },
+      kWBData: {
+        series: [],
+        xAxis: [],
+        color: '#f46443',
+        title: '微博发布'
       },
       barTabs: [
         '发稿数', '阅读数', '关注人数'
@@ -255,7 +264,8 @@ export default {
     handleTrends() {
       let cateData = [];
       const x = [];
-      const s = [];
+      const s_wx = [];
+      const s_wb = [];
       switch(this.activeK) {
         case '发稿数趋势':
         cateData = this.trendData.draft;
@@ -268,10 +278,13 @@ export default {
       }
       cateData.forEach((item) => {
         x.push(item.date)
-        s.push(item.num - 0)
+        s_wx.push(item.num - 0)
+        s_wb.push(0)
       })
-      this.kData.series = s
-      this.kData.xAxis = x
+      this.kWXData.series = s_wx
+      this.kWXData.xAxis = x
+      this.kWBData.series = s_wb
+      this.kWBData.xAxis = x
     },
     getBoardData(range) {
       Common.myFetch(Apis.S_WX_Board_DEV, Apis.S_WX_Board_Path, range)
