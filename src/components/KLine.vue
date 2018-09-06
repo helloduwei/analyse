@@ -8,11 +8,21 @@ const echarts = require('echarts')
 export default {
   name: 'doubleBar',
   props: {
-    // BarCharts
+    data: Object
   },
   data() {
     return {
       // to be done
+    }
+  },
+  watch: {
+    data: {
+      deep: true,
+      handler: function(newer, old) {
+        if (newer) {
+          this.getInit()
+        }
+      }
     }
   },
   methods: {
@@ -24,7 +34,8 @@ export default {
       const myCharts = echarts.init(element);
       const options = {
         legend: {
-          data: ['wx发布']
+          right: '0',
+          data: ['微信发布']
         },
         tooltip: {
             trigger: 'axis'
@@ -35,7 +46,7 @@ export default {
           width: '100%'
         },
         xAxis: { 
-          data: ['mon', 'tue', 'wed', 'thu'],
+          data: this.data.xAxis,
           type: 'category',
         },
         yAxis: {
@@ -44,7 +55,8 @@ export default {
         series: [
           {
             type: 'line',
-            data: [10, 20, 30, 20]
+            name: '微信发布',
+            data: this.data.series
           }
         ]
       }

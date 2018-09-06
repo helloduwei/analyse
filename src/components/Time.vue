@@ -90,6 +90,7 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
+  margin: 24px auto 14px;
   .range {
     display: inline-block;
     margin: 0 0 0 10px;

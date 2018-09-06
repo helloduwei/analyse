@@ -115,7 +115,7 @@
           </div>
         </div>
         <Time eleId="date2" v-on:fetchRange="getKRange" />
-        <KLine />
+        <KLine v-bind:data="kData" />
       </div>
       <div class="chartSection">
         <div class="title">
@@ -125,39 +125,15 @@
         </div>
         <Time eleId="date3" v-on:fetchRange="getBoardRange" />
         <div class="boards">
-          <div class="board">
+          <div class="board" v-for="(value, key) in boards" :key="key">
             <p class="title">
-              稿件发布数排行
+              {{transBoard(key)}}
               <img src="../assets/img/data_title.png" alt="">
             </p>
             <ol class="boardData">
-              <li v-for="(board, boardIndex) in boards" :key="boardIndex">
+              <li v-for="(board, boardIndex) in value" :key="boardIndex">
                 <span>{{board.name}}</span>
-                <span class="mount">{{board.mount}}</span>
-              </li>
-            </ol>
-          </div>
-          <div class="board">
-            <p class="title">
-              稿件发布数排行
-              <img src="../assets/img/data_title.png" alt="">
-            </p>
-            <ol class="boardData">
-              <li v-for="(board, boardIndex) in boards" :key="boardIndex">
-                <span>{{board.name}}</span>
-                <span class="mount">{{board.mount}}</span>
-              </li>
-            </ol>
-          </div>
-          <div class="board">
-            <p class="title">
-              稿件发布数排行
-              <img src="../assets/img/data_title.png" alt="">
-            </p>
-            <ol class="boardData">
-              <li v-for="(board, boardIndex) in boards" :key="boardIndex">
-                <span>{{board.name}}</span>
-                <span class="mount">{{board.mount}}</span>
+                <span class="mount">{{board.num}}</span>
               </li>
             </ol>
           </div>
@@ -212,6 +188,12 @@ export default {
           wb: '...'
         }
       },
+      boards: {},
+      trendData: {},
+      kData: {
+        series: [],
+        xAxis: []
+      },
       barTabs: [
         '发稿数', '阅读数', '关注人数'
       ],
@@ -224,40 +206,6 @@ export default {
         '微信排行', '微博排行'
       ],
       activeBoard: '微信排行',
-      boards: [
-        {
-          name: '新闻坊',
-          mount: '1.9万'
-        },
-        {
-          name: '新闻坊',
-          mount: '1.9万'
-        },
-        {
-          name: '新闻坊',
-          mount: '1.9万'
-        },
-        {
-          name: '新闻坊',
-          mount: '1.9万'
-        },
-        {
-          name: '新闻坊',
-          mount: '1.9万'
-        },
-        {
-          name: '新闻坊',
-          mount: '1.9万'
-        },
-        {
-          name: '新闻坊',
-          mount: '1.9万'
-        },
-        {
-          name: '新闻坊',
-          mount: '1.9万'
-        }
-      ]
     }
   },
   methods: {
@@ -300,13 +248,35 @@ export default {
     getWXTrend(range) {
       Common.myFetch(Apis.S_WX_Trend_DEV, Apis.S_WX_Trend_Path, range)
       .then((data) => {
-        console.log('wx trend', data)
+        this.trendData = data
+        this.handleTrends()
       })
+    },
+    handleTrends() {
+      let cateData = [];
+      const x = [];
+      const s = [];
+      switch(this.activeK) {
+        case '发稿数趋势':
+        cateData = this.trendData.draft;
+        break;
+        case '阅读数趋势':
+        cateData = this.trendData.read;
+        break;
+        case '关注人数趋势':
+        cateData = this.trendData.new;
+      }
+      cateData.forEach((item) => {
+        x.push(item.date)
+        s.push(item.num - 0)
+      })
+      this.kData.series = s
+      this.kData.xAxis = x
     },
     getBoardData(range) {
       Common.myFetch(Apis.S_WX_Board_DEV, Apis.S_WX_Board_Path, range)
       .then((data) => {
-        console.log('wx board', data)
+        this.boards = data
       })
     },
     toggleBar(bar) {
@@ -314,6 +284,7 @@ export default {
     },
     toggleK(k) {
       this.activeK = k;
+      this.handleTrends()
     },
     toggleBoard(board) {
       this.activeBoard = board;
@@ -330,6 +301,25 @@ export default {
         case 'board':
         this.boardRange = val;
       }
+    },
+    transBoard(key) {
+      let title = '排行榜'
+      switch (key) {
+        case 'pub_rank':
+        title = '稿件发布数排行';
+        break;
+        case 'new_rank':
+        title = '新增关注数排行';
+        break;
+        case 'all_rank':
+        title = '关注总人数排行';
+        break;
+        case 'read_rank':
+        title = '稿件阅读总数排行';
+        break;
+      }
+
+      return title;
     }
   },
   mounted() {
