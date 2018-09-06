@@ -106,7 +106,7 @@
           </div>
         </div>
         <Time eleId="date1" v-on:fetchRange="getBarRange" />
-        <DoubleBar />
+        <DoubleBar v-bind:barData="doubleBarOptions" />
       </div>
       <div class="chartSection">
         <div class="title">
@@ -191,6 +191,7 @@ export default {
       },
       boards: {},
       trendData: {},
+      wxData: [],
       kWXData: {
         series: [],
         xAxis: [],
@@ -202,6 +203,11 @@ export default {
         xAxis: [],
         color: '#f46443',
         title: '微博发布'
+      },
+      doubleBarOptions: {
+        y: [],
+        series: [],
+        legend: []
       },
       barTabs: [
         '发稿数', '阅读数', '关注人数'
@@ -251,8 +257,99 @@ export default {
     getWXData(range) {
       Common.myFetch(Apis.S_WX_Data_DEV, Apis.S_WX_Data_Path, range)
       .then((data) => {
-        console.log('wx data', data)
+        this.wxData = data
+        this.handleData(data)
       })
+    },
+    handleData() {
+      const yAxis = []
+      // const xAxis = {
+      //   wx: [],
+      //   wb: []
+      // }
+      const legend = ['微信', '微博']
+      const seriesWX = []
+      const seriesNotWX = []
+      const seriesWB = [0]
+      const seriesNotWB = [0]
+
+      this.wxData.forEach((item) => {
+        yAxis.push(item.title)
+        let iswx = 0
+        let isnotwx = 0
+        // let iswb = 0
+        // let isnotwb
+        item.weixin.forEach((wx) => {
+          if (this.activeBar === '发稿数') {
+            iswx = iswx + (wx.shuliang.iditor_draft - 0)
+            isnotwx = isnotwx + (wx.shuliang.draft - 0) - (wx.shuliang.iditor_draft - 0)
+          } else if(this.activeBar === '阅读数') {
+            iswx = iswx + (wx.shuliang.read - 0)
+          } else {
+            iswx = iswx + (wx.shuliang.new - 0)
+          }
+        })
+        // item.weibo.forEach((wb) => {})
+
+        seriesWX.push(iswx)
+        seriesNotWX && seriesNotWX.push(isnotwx)
+        // seriesWB.push(iswb)
+        // seriesNotWB.push(isnotwb)
+      })
+      const series = [
+        {
+          name: '微信',
+          type: 'bar',
+          stack: 'one',
+          data: seriesWX,
+          xAxisIndex: 0,
+          yAxisIndex: 0,
+          itemStyle: {
+            color: '#7ee23c'
+          }
+        },{
+          name: '微博',
+          type: 'bar',
+          stack: 'two',
+          data: seriesWB,
+          xAxisIndex: 1,
+          yAxisIndex: 1,
+          itemStyle: {
+            color: '#f46443'
+          }
+        }
+      ]
+      if (this.activeBar === '发稿数') {
+        series.push({
+          name: '非平台',
+          type: 'bar',
+          stack: 'one',
+          data: seriesNotWX,
+          xAxisIndex: 0,
+          yAxisIndex: 0,
+          itemStyle: {
+            color: '#ddeefb'
+          }
+        })
+        series.push({
+          name: '非平台',
+          type: 'bar',
+          stack: 'two',
+          data: seriesNotWB,
+          xAxisIndex: 1,
+          yAxisIndex: 1,
+          itemStyle: {
+            color: '#ddeefb'
+          }
+        })
+        legend.push('非平台')
+      }
+
+      this.doubleBarOptions = {
+        y: yAxis,
+        series: series,
+        legend: legend
+      }
     },
     getWXTrend(range) {
       Common.myFetch(Apis.S_WX_Trend_DEV, Apis.S_WX_Trend_Path, range)
@@ -294,12 +391,17 @@ export default {
     },
     toggleBar(bar) {
       this.activeBar = bar;
+      this.handleData();
     },
     toggleK(k) {
       this.activeK = k;
       this.handleTrends()
     },
     toggleBoard(board) {
+      if (board === '微博排行') {
+        alert('暂无微博数据')
+        return
+      }
       this.activeBoard = board;
     },
     toggleRange(item, type) {

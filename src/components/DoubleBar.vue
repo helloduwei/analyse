@@ -8,11 +8,21 @@ const echarts = require('echarts')
 export default {
   name: 'doubleBar',
   props: {
-    // BarCharts
+    barData: Object
   },
   data() {
     return {
       // to be done
+    }
+  },
+  watch: {
+    barData: {
+      deep: true,
+      handler: function(newer, old) {
+        if (newer) {
+          this.getInit()
+        }
+      }
     }
   },
   methods: {
@@ -20,15 +30,13 @@ export default {
       // to be done
     },
     getInit() {
+      console.log(123, this.barData.series)
       const element = document.querySelector('#doubleBar');
       const myCharts = echarts.init(element);
-      const isWX = [10, 20];
-      const isNotWX = [20, 30];
-      const isWB = [20, 30];
-      const isNotWB = [10, 30];
       const options = {
         legend: {
-          data: ['wx', 'notWX', 'wb', 'notWB']
+          data: this.barData.legend,
+          right: '0'
         },
         tooltip: {},
         grid: [
@@ -46,23 +54,23 @@ export default {
         xAxis: [
           { 
             gridIndex: 0,
-            data: [10, 20, 30, 40],
+            // data: [10, 20, 30, 40],
             type: 'value',
             inverse: true
           },
           { 
             gridIndex: 1,
-            data: [10, 20, 30, 40],
+            // data: [10, 20, 30, 40],
             type: 'value'
           }
         ],
         yAxis: [
           {
             gridIndex: 0,
-            data: ['1', '2'],
+            data: this.barData.y,
             type: 'category',
             position: 'right',
-            offset: 90,
+            offset: 40,
             axisLine: {
               show: false
             },
@@ -72,45 +80,12 @@ export default {
           },
           {
             gridIndex: 1,
-            data: ['1', '2'],
+            data: this.barData.y,
             type: 'category',
             show: false
           }
         ],
-        series: [
-          {
-            name: 'wx',
-            type: 'bar',
-            stack: 'one',
-            data: isWX,
-            xAxisIndex: 0,
-            yAxisIndex: 0,
-          },
-          {
-            name: 'notWX',
-            type: 'bar',
-            stack: 'one',
-            data: isNotWX,
-            xAxisIndex: 0,
-            yAxisIndex: 0,
-          },
-          {
-            name: 'wb',
-            type: 'bar',
-            stack: 'two',
-            data: isWB,
-            xAxisIndex: 1,
-            yAxisIndex: 1,
-          },
-          {
-            name: 'notWB',
-            type: 'bar',
-            stack: 'two',
-            data: isNotWB,
-            xAxisIndex: 1,
-            yAxisIndex: 1,
-          }
-        ]
+        series: this.barData.series
       }
 
       myCharts.setOption(options)
