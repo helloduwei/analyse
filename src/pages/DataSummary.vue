@@ -1,7 +1,9 @@
 <template>
   <div class="content">
     <User />
-    data-summary page
+    <div class="mai">
+      
+    </div>
   </div>
 </template>
 

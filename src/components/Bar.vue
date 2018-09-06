@@ -1,12 +1,12 @@
 <!-- 双向飓风图 -->
 <template>
-  <div class="charts" id="doubleBar"></div>
+  <div class="charts" id="bar"></div>
 </template>
 
 <script>
 const echarts = require('echarts')
 export default {
-  name: 'doubleBar',
+  name: 'bar',
   props: {
     barData: Object
   },
@@ -30,7 +30,7 @@ export default {
       // to be done
     },
     getInit() {
-      const element = document.querySelector('#doubleBar');
+      const element = document.querySelector('#bar');
       const myCharts = echarts.init(element);
       const options = {
         legend: {
