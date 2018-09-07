@@ -258,7 +258,7 @@ export default {
       Common.myFetch(Apis.S_WX_Data_DEV, Apis.S_WX_Data_Path, range)
       .then((data) => {
         this.wxData = data
-        this.handleData(data)
+        this.handleData()
       })
     },
     handleData() {

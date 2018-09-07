@@ -1,6 +1,6 @@
-<!-- 双向飓风图 -->
+<!-- 柱状图组件 -->
 <template>
-  <div class="charts" id="bar"></div>
+  <div class="charts" :id="eleId"></div>
 </template>
 
 <script>
@@ -8,20 +8,19 @@ const echarts = require('echarts')
 export default {
   name: 'bar',
   props: {
-    barData: Object
+    barData: Object,
+    eleId: String
   },
   data() {
     return {
-      // to be done
+      chartInstance: null
     }
   },
   watch: {
     barData: {
       deep: true,
       handler: function(newer, old) {
-        if (newer) {
-          this.getInit()
-        }
+        this.getInit()
       }
     }
   },
@@ -30,59 +29,23 @@ export default {
       // to be done
     },
     getInit() {
-      const element = document.querySelector('#bar');
-      const myCharts = echarts.init(element);
+      let myCharts = this.chartInstance
+      if (myCharts) {
+        myCharts.dispose()
+      }
+      const elementId = '#' + this.eleId
+      const element = document.querySelector(elementId);
+      myCharts = echarts.init(element);
       const options = {
-        legend: {
-          data: this.barData.legend,
-          right: '0'
+        tooltip: {
+          trigger: 'axis'
         },
-        tooltip: {},
-        grid: [
-          {
-            left: '5%',
-            top: '20%',
-            width: '35%'
-          },
-          {
-            left: '60%',
-            top: '20%',
-            width: '35%'
-          }
-        ],
-        xAxis: [
-          { 
-            gridIndex: 0,
-            type: 'value',
-            inverse: true
-          },
-          { 
-            gridIndex: 1,
-            type: 'value'
-          }
-        ],
-        yAxis: [
-          {
-            gridIndex: 0,
-            data: this.barData.y,
-            type: 'category',
-            position: 'right',
-            offset: 40,
-            axisLine: {
-              show: false
-            },
-            axisTick: {
-              show: false
-            }
-          },
-          {
-            gridIndex: 1,
-            data: this.barData.y,
-            type: 'category',
-            show: false
-          }
-        ],
-        series: this.barData.series
+        xAxis: this.barData.xAxis,
+        yAxis: this.barData.yAxis,
+        series: this.barData.series,
+        itemStyle: {
+            color: this.barData.color || '#7ee23c'
+        }
       }
 
       myCharts.setOption(options)
@@ -96,7 +59,6 @@ export default {
 
 <style lang="less" scoped>
 .charts {
-  // to be
   height: 400px;
 }
 </style>

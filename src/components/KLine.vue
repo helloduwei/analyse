@@ -6,7 +6,7 @@
 <script>
 const echarts = require('echarts')
 export default {
-  name: 'doubleBar',
+  name: 'kLine',
   props: {
     data: Object,
     eleId: String
@@ -14,15 +14,14 @@ export default {
   data() {
     return {
       // to be done
+      chartInstance: null
     }
   },
   watch: {
     data: {
       deep: true,
       handler: function(newer, old) {
-        if (newer) {
-          this.getInit()
-        }
+        this.getInit()
       }
     }
   },
@@ -31,9 +30,13 @@ export default {
       // to be done
     },
     getInit() {
+      let myCharts = this.chartInstance
+      if (myCharts) {
+        myCharts.dispose()
+      }
       const elementId = '#' + this.eleId
       const element = document.querySelector(elementId);
-      const myCharts = echarts.init(element);
+      myCharts = echarts.init(element);
       const options = {
         legend: {
           right: '0',
@@ -70,14 +73,13 @@ export default {
     }
   },
   mounted() {
-    this.getInit();
+    // this.getInit();
   }
 }
 </script>
 
 <style lang="less" scoped>
 .charts {
-  // to be
   height: 400px;
 }
 </style>

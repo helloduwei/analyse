@@ -12,16 +12,14 @@ export default {
   },
   data() {
     return {
-      // to be done
+      chartInstance: null
     }
   },
   watch: {
     barData: {
       deep: true,
       handler: function(newer, old) {
-        if (newer) {
-          this.getInit()
-        }
+        this.getInit()
       }
     }
   },
@@ -30,8 +28,12 @@ export default {
       // to be done
     },
     getInit() {
+      let myCharts = this.chartInstance
+      if (myCharts) {
+        myCharts.dispose()
+      }
       const element = document.querySelector('#doubleBar');
-      const myCharts = echarts.init(element);
+      myCharts = echarts.init(element);
       const options = {
         legend: {
           data: this.barData.legend,
@@ -96,7 +98,6 @@ export default {
 
 <style lang="less" scoped>
 .charts {
-  // to be
   height: 400px;
 }
 </style>

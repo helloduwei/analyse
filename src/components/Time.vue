@@ -13,9 +13,10 @@
 
 <script>
 export default {
-  name: 'User',
+  name: 'Time',
   props: {
-    eleId: String
+    eleId: String,
+    hasYesterDay: Boolean
   },
   data() {
     return {
@@ -35,13 +36,19 @@ export default {
   },
   methods: {
     toggleRange(range) {
-      this.rangeType = range.type
+      if (range) {
+        this.rangeType = range.type
+      }
+
       let timeData = {}
       if (this.rangeType === 0) {
         timeData = this.lastDays(7)
         this.passDate(timeData)
       } else if (this.rangeType === 1) {
         timeData = this.lastDays(30)
+        this.passDate(timeData)
+      } else if (this.rangeType === 3) {
+        timeData = this.getYesterDay()
         this.passDate(timeData)
       }
     },
@@ -53,6 +60,14 @@ export default {
       return {start: end, end: now}
     },
     init() {
+      if (this.hasYesterDay) {
+        const yesterday = {
+          value: '昨天',
+          type: 3
+        }
+        this.ranges.unshift(yesterday)
+        this.rangeType = yesterday.type
+      }
       const options = {
         format: "YYYY-MM-DD",
         range:" 至 ",
@@ -71,13 +86,22 @@ export default {
       const date = {start: startSec, end: endSec}
       this.passDate(date)
     },
+    getYesterDay() {
+      const today = new Date()
+      const year = today.getFullYear()
+      const month = today.getMonth() + 1
+      const day = today.getDate() - 1
+      const startSec = +new Date(`${year}-${month}-${day} 00:00:00`)/1000
+      const endSec = +new Date(`${year}-${month}-${day} 23:59:59`)/1000
+      return {start: startSec, end: endSec}
+    },
     passDate(range) {
       this.$emit('fetchRange', range)
     }
   },
   mounted() {
     this.init()
-    this.passDate(this.lastDays(7))
+    this.toggleRange()
   }
 }
 </script>
