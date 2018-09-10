@@ -38,6 +38,15 @@
         <KLine eleId="k1" v-bind:data="kWXData" />
         <KLine eleId="k2" v-bind:data="kWBData" />
       </div>
+      <div class="chartSection">
+        <div class="boldTitle">
+          微信稿件阅读分享场景
+          <img src="../assets/img/data_title.png" alt="">
+        </div>
+        <Time eleId="date3" v-on:fetchRange="getSceneRange"/>
+        <Pie eleId="pie1" v-bind:pieData="readScenesData" />
+        <Pie eleId="pie2" v-bind:pieData="shareScenesData" />
+      </div>
     </div>
   </div>
 </template>
@@ -50,6 +59,7 @@ import Time from '../components/Time'
 import DoubleBar from '../components/DoubleBar'
 import Bar from '../components/Bar'
 import KLine from '../components/KLine'
+import Pie from '../components/Pie'
 export default {
   name: 'pageSummaryPage',
   components: {
@@ -57,7 +67,8 @@ export default {
     Time,
     DoubleBar,
     Bar,
-    KLine
+    KLine,
+    Pie
   },
   data() {
     return {
@@ -81,6 +92,7 @@ export default {
       pages: [],
       barRange: {},
       pageRange: {},
+      scenceRange: {},
       pageData : [],
       kWXData: {
         series: [],
@@ -93,6 +105,14 @@ export default {
         xAxis: [],
         color: '#f46443',
         title: '微博发布'
+      },
+      readScenesData: {
+        legend: [],
+        series: []
+      },
+      shareScenesData: {
+        legend: [],
+        series: []
       }
     }
   },
@@ -184,10 +204,32 @@ export default {
       this.kWBData.series = s_wb
     },
     getScenes() {
-      Common.myFetch(Apis.PS_SCENES_DEV, Apis.PS_SCENES_Path, {})
+      Common.myFetch(Apis.PS_SCENES_DEV, Apis.PS_SCENES_Path, this.scenceRange)
       .then((data) => {
+        this.scencesData = data
+        this.handleScenes()
         console.log('scenes', data)
       })
+    },
+    loopData(reciever, data) {
+      for (const i in data) {
+        if (data.hasOwnProperty(i)) {
+          reciever.push(data[i].num || data[i])
+        }
+      }
+      return reciever
+    },
+    handleScenes() {
+      // 待接口调整
+      const data = this.scencesData
+      let readNums = []
+      let readTypes = []
+      let shareNums = []
+      let shareTypes = []
+      this.readScenesData.legend = this.loopData(readTypes, data.read.desc)
+      this.readScenesData.series = this.loopData(readNums, data.read.data)
+      this.shareScenesData.legend = this.loopData(shareTypes, data.share.desc)
+      this.shareScenesData.series = this.loopData(shareNums, data.share.data)
     },
     toggleBar(bar) {
       if (bar === '微博评论数' || bar === '微博点赞数') {
@@ -211,10 +253,10 @@ export default {
     getPageRange(r) {
       this.pageRange = r
       this.getHotPages()
-      console.log(r)
     },
     getSceneRange(r) {
-      console.log(r)
+      this.scenceRange = r
+      this.getScenes()
     }
   },
   mounted() {
