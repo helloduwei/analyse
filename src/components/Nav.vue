@@ -113,6 +113,9 @@ export default {
         case '/wx-page':
         this.currentpage = 4;
         break;
+        case '/wx-detail':
+        this.currentpage = 2;
+        break;
         default:
         this.currentpage = 0;
       }

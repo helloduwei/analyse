@@ -4,6 +4,7 @@ import DataSummary from '../pages/DataSummary.vue'
 import DataDetail from '../pages/DataDetail.vue'
 import PageSummary from '../pages/PageSummary.vue'
 import WxPage from '../pages/WxPage.vue'
+import WxDetail from '../pages/WxDetail.vue'
 
 export default {
   pages: [
@@ -30,6 +31,10 @@ export default {
     {
       path: '/wx-page',
       component: WxPage
+    },
+    {
+      path: '/wx-detail',
+      component: WxDetail
     }
   ]
 }
