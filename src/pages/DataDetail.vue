@@ -107,4 +107,4 @@ export default {
 }
 </script>
 
-<style lang="less" scoped src="../assets/css/pageDetail.less"></style>
+<style lang="less" scoped src="../assets/css/dataDetail.less"></style>
